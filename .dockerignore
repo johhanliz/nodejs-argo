@@ -1,0 +1,11 @@
+.git
+.gitignore
+.github
+.cline-home
+.tmp
+.env
+.env.example
+node_modules
+npm-debug.log*
+*.md
+scripts

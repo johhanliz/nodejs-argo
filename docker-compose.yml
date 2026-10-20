@@ -1,0 +1,26 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs-argo:latest
+    container_name: nodejs-argo
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    # Cloudflare 隧道由容器内的 cloudflared 主动外连，默认无需对外暴露端口。
+    # 如果要用「IP:8080 直连」而不走 Cloudflare，取消下面注释并在云防火墙放行。
+    # ports:
+    #   - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS \"http://127.0.0.1:$${PORT:-3001}/\" >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

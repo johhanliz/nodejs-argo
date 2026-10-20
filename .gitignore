@@ -1,0 +1,14 @@
+# 运行时生成（sing-box / cloudflared 二进制、config.json、sub.txt、boot.log）
+.tmp/
+
+# 本地配置与订阅缓存
+.env
+*.log
+
+# 依赖
+node_modules/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/
