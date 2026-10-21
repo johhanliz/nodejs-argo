@@ -1,0 +1,12 @@
+services:
+  argo-node:
+    build: .
+    container_name: argo-node
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      # 保存 uuid / 二进制 / 配置，重启不用重新下载
+      - ./data:/tmp/data

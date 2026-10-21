@@ -1,20 +1,21 @@
 {
-  "name": "nodejs",
-  "version": "1,0,0",
-  "description": "Thsi is a node project",
-  "main": "index.js",
+  "name": "nodejs-argo",
+  "version": "1.0.0",
+  "description": "Xray + Cloudflare Tunnel node (VLESS/VMess/Trojan over WebSocket)",
+  "main": "server.js",
   "author": "",
   "repository": "",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "node index.js",
-    "start": "node index.js"
+    "dev": "node server.js",
+    "start": "node server.js",
+    "start:legacy": "node index.js"
   },
   "dependencies": {
     "axios": "latest"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   }
 }
