@@ -32,11 +32,16 @@ Xray（按 path 分流：/vless-argo、/vmess-argo、/trojan-argo）
 ## 方案一：没有域名，5 分钟先用起来（临时隧道）
 
 ```bash
+git clone https://github.com/johhanliz/nodejs-argo.git
+cd nodejs-argo
+git checkout cline/xs0g2ef7        # 这一版的新实现；合并到 main 后可省略
+
+docker build -t argo-node .
 docker run -d --name argo-node \
   -p 3000:3000 \
   -e UUID=$(node -e "console.log(crypto.randomUUID())") \
   -e NAME=my-node \
-  ghcr.io/johhanliz/nodejs:latest
+  argo-node
 
 docker logs -f argo-node
 ```
@@ -85,13 +90,18 @@ node server.js
 ### 3. 部署并填入三个变量
 
 ```bash
+git clone https://github.com/johhanliz/nodejs-argo.git
+cd nodejs-argo
+git checkout cline/xs0g2ef7
+
+docker build -t argo-node .
 docker run -d --name argo-node \
   -p 3000:3000 \
   -e UUID=$(node -e "console.log(crypto.randomUUID())") \
   -e ARGO_AUTH='你复制的 token' \
   -e ARGO_DOMAIN='node.你的域名' \
   -e NAME=HK \
-  ghcr.io/johhanliz/nodejs:latest
+  argo-node
 ```
 
 启动后订阅地址是：
@@ -123,12 +133,14 @@ https://node.你的域名/sub
 
 以 Koyeb 为例（图形界面）：
 
-1. Create Service → **Docker**
-2. Image: `ghcr.io/johhanliz/nodejs:latest`
+1. Create Service → **GitHub** → 选择本仓库，分支 `cline/xs0g2ef7`（合并后选 `main`）
+2. Builder 选 **Dockerfile**
 3. Instance: 最小的免费规格
 4. Environment variables 填 `UUID`、`ARGO_AUTH`、`ARGO_DOMAIN`、`NAME`
 5. Port: `3000`（HTTP，用于健康检查）
 6. Deploy，日志里看到 `启动完成` 即可
+
+> 仓库自带的 Actions 会在 `main` 分支构建镜像 `ghcr.io/<你的用户名>/nodejs:latest`。等它构建过一次之后再直接用镜像部署会更省事。
 
 ## 用 Docker Compose（本地 / VPS）
 
